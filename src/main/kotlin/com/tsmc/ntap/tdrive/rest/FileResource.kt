@@ -19,7 +19,7 @@ class FileResource {
     suspend fun readFile(fileName: String): Response =
         when (val e = FileService.readPart(fileName)) {
             is Either.Right -> Response.ok(e.value).build()
-            is Either.Left -> tDriveError2Response(e.value)
+            is Either.Left -> TDriveError.toResponse(e.value)
         }
 
 
@@ -30,12 +30,10 @@ class FileResource {
         listOf("part1.txt", "part2.txt", "part3.txt", "part4.txt").let { fileNames ->
             when (val e = FileService.combineFiles(fileNames)) {
                 is Either.Right -> Response.ok(e.value).build()
-                is Either.Left -> tDriveError2Response(e.value)
+                is Either.Left -> TDriveError.toResponse(e.value)
             }
         }
 
-    private fun tDriveError2Response(e: TDriveError) = when (e) {
-        is FileReadError -> Response.serverError().entity(e.e.stackTraceToString()).build()
-    }
+
 
 }

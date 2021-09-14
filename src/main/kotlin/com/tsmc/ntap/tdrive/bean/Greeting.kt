@@ -1,3 +1,3 @@
-package com.tsmc.ntap.tdrive.rest
+package com.tsmc.ntap.tdrive.bean
 
 data class Greeting(val message: String = "")
