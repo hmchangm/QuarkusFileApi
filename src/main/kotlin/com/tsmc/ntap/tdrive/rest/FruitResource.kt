@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
 @Path("/")
-class GreetingResource {
+class FruitResource {
 
     @GET
     @Path("/greeting")
