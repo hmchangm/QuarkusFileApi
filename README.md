@@ -1,8 +1,7 @@
-# tDriveRest Project
+# Quarkus, Kotlin and Arrow KT Project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
-
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+Try to use Quarkus , Kotlin , Arrow KT (Functional companion to Kotlin) to write a sample project
+Also leverage quarkus reactive and coroutines for fiber thread
 
 ## Running the application in dev mode
 
@@ -48,8 +47,7 @@ If you want to learn more about building native executables, please consult http
 ## Related Guides
 
 - Kotlin ([guide](https://quarkus.io/guides/kotlin)): Write your services in Kotlin
-- RESTEasy JAX-RS ([guide](https://quarkus.io/guides/rest-json)): REST endpoint framework implementing JAX-RS and more
-
+- Arrow KT (https://arrow-kt.io/): Functional companion to Kotlin's Standard Library.
 ## Provided Code
 
 ### RESTEasy JAX-RS
