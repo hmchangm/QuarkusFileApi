@@ -1,4 +1,4 @@
-package com.tsmc.ntap.tdrive.rest
+package tw.idv.quarkus.arrow.rest
 
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given

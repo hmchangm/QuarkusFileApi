@@ -1,8 +1,8 @@
-package com.tsmc.ntap.tdrive.repo
+package tw.idv.quarkus.arrow.repo
 
 import arrow.core.*
-import com.tsmc.ntap.tdrive.TDriveError
-import com.tsmc.ntap.tdrive.bean.Fruit
+import tw.idv.quarkus.arrow.KaqAppError
+import tw.idv.quarkus.arrow.bean.Fruit
 import com.vladsch.kotlin.jdbc.Row
 import com.vladsch.kotlin.jdbc.SqlQuery
 import com.vladsch.kotlin.jdbc.sqlQuery
@@ -20,30 +20,30 @@ class FruitRepo {
             )
         }
         private val allFruitQuery: SqlQuery = sqlQuery("select * from fruit")
-        val findAll: suspend () -> Either<TDriveError, List<Fruit>> =
+        val findAll: suspend () -> Either<KaqAppError, List<Fruit>> =
             {
                 Either.catch {
                     usingDefault { session ->
                         session.list(allFruitQuery, toFruit)
                     }
-                }.mapLeft { TDriveError.DatabaseProblem(it) }
+                }.mapLeft { KaqAppError.DatabaseProblem(it) }
             }
 
         private const val findByIdSql = "select * from fruit where uuid = ?"
-        val findById: suspend (uuid: String) -> Either<TDriveError, Fruit> = {uuid->
+        val findById: suspend (uuid: String) -> Either<KaqAppError, Fruit> = { uuid->
             runCatching {usingDefault { session ->
                 session.first(sqlQuery(findByIdSql,uuid), toFruit)
             }}.fold(
             { fruit->
                  when (val one = fruit.toOption()) {
                     is Some -> one.value.right()
-                    is None -> TDriveError.SomeError(uuid).left()
+                    is None -> KaqAppError.SomeError(uuid).left()
                 }
-            }, {  Either.Left(TDriveError.DatabaseProblem(it)) })
+            }, {  Either.Left(KaqAppError.DatabaseProblem(it)) })
         }
 
         private const val insertSql: String = "insert into fruit (uuid,name,description) values (?, ?, ?)"
-        val add: suspend (fruit: Fruit) -> Either<TDriveError, Fruit> = {fruit->
+        val add: suspend (fruit: Fruit) -> Either<KaqAppError, Fruit> = { fruit->
             Either.catch {
                 usingDefault { session ->
                     val one = fruit.copy(uuid = UUID.randomUUID().toString())
@@ -52,11 +52,11 @@ class FruitRepo {
                     }
                     one
                 }
-            }.mapLeft { TDriveError.DatabaseProblem(it) }
+            }.mapLeft { KaqAppError.DatabaseProblem(it) }
         }
 
         private const val updateSql: String = "update fruit set name=?,description=? where uuid=?"
-        val update: suspend (fruit: Fruit) -> Either<TDriveError,Unit> = {one->
+        val update: suspend (fruit: Fruit) -> Either<KaqAppError,Unit> = { one->
             Either.catch {
                 usingDefault { session ->
                     session.transaction { tx ->
@@ -64,7 +64,7 @@ class FruitRepo {
                     }
                 }
                 Unit
-            }.mapLeft { TDriveError.DatabaseProblem(it) }
+            }.mapLeft { KaqAppError.DatabaseProblem(it) }
         }
 
     }

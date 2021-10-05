@@ -1,3 +1,3 @@
-package com.tsmc.ntap.tdrive.bean
+package tw.idv.quarkus.arrow.bean
 
 data class Greeting(val message: String = "")

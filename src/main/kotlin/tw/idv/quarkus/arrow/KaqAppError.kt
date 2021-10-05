@@ -1,14 +1,14 @@
-package com.tsmc.ntap.tdrive
+package tw.idv.quarkus.arrow
 
 import javax.ws.rs.core.Response
 
-sealed class TDriveError {
-    data class DatabaseProblem(val e :Throwable):TDriveError()
-    data class FileReadError(val e :Throwable):TDriveError()
-    data class SomeError(val uuid: String):TDriveError()
+sealed class KaqAppError {
+    data class DatabaseProblem(val e :Throwable): KaqAppError()
+    data class FileReadError(val e :Throwable): KaqAppError()
+    data class SomeError(val uuid: String): KaqAppError()
 
     companion object {
-        fun toResponse(e: TDriveError): Response = when (e) {
+        fun toResponse(e: KaqAppError): Response = when (e) {
             is FileReadError -> Response.serverError().entity(e.e.stackTraceToString()).build()
             is DatabaseProblem -> Response.serverError().entity("DbError ${e.e.stackTraceToString()}")
                 .build()
